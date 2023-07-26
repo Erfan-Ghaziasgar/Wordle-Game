@@ -1,6 +1,7 @@
 import csv
 import random
 
+# Local Imports
 from src.utils import MyPrint
 
 
@@ -12,6 +13,9 @@ class Wordle():
         self.try_num = try_num
 
     def generate_word(self, file: str, word_len: int, limit: int) -> list:
+        '''
+        Generate a list of words from a csv file
+        '''
         words = []
         with open(file, 'r') as f:
             reader = csv.reader(f)
@@ -21,11 +25,17 @@ class Wordle():
         return sorted_words[:limit]
 
     def select_word(self):
+        '''
+        Select a random word from the list of words
+        '''
         selected_word = random.choice(self.words)
         selected_word = selected_word.upper()
         return selected_word
 
     def check_letter(self, selected_word, guess_word):
+        '''
+        Check the letters of the guess word and print the result
+        '''
         for guess_char, word_char in zip(guess_word, selected_word):
             if guess_char == word_char:
                 self.printer.success(f"{ guess_char }", end=' ')
@@ -36,6 +46,9 @@ class Wordle():
         print()
 
     def run(self):
+        '''
+        Run the game and check the guess word with the selected word
+        '''
         selected_word = self.select_word()
         print(selected_word)
         while self.try_num:
@@ -63,5 +76,6 @@ class Wordle():
 
             self.try_num -= 1
         else:
+            # If the user can't guess the word in the given number of tries
             print()
             self.printer.error(f"Game Over! Correct Word Is {selected_word}")
